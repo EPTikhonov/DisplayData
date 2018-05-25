@@ -1,0 +1,80 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  text-align: center;
+}
+
+a:link, a:visited, a:hover, a:active {
+  text-align: center;
+  text-decoration: none;
+}
+
+.header {
+  background-color: #333;
+  color: white;
+  font-size: 40px;
+}
+
+h3 {
+  color: #333;
+}
+
+#chartDisplay {
+  text-align: center;
+}
+
+#chartContent {
+  text-align: center;
+  border-style: solid;
+  border-color: #333;
+  height: 100%;
+}
+
+#operations {
+  text-align: center;
+}
+
+#operationsContent {
+  text-align: center;
+  border-style: solid;
+  border-color: #333;
+  height: 100%;
+}
+
+#primary_operation_buttons {
+  padding-top: 4%;
+  padding-bottom: 1%;
+}
+
+#currentDataSet {
+  padding-top: 1%;
+  padding-bottom: 4%;
+}
+
+#chartContent {
+  padding-top: 30%;
+}
+
+.dropbtn {
+   color: white;
+   padding: 16px;
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+}
+
+.dropdown-content a {
+   color: black;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+}
+
+.dropdown-content a:hover {background-color: #ddd}
+
+#upload_button {
+  display: inline-block;
+}
+#upload_button input[type=file] {
+  display:none;
+}

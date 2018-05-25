@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- Chart JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <!-- My Own CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- My Own JS -->
+  <script type="text/javascript" src="script.js"></script>
+
+  <title>DisplayData</title>
+</head>
+
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header">
+      <span class="fa fa-bar-chart"> DisplayData
+      </span>
+    </div>
+  </div>
+  <br>
+  <!-- Sections -->
+  <div class="container-fluid">
+    <div class="row">
+      <!-- First Section -->
+      <div id="chartDisplay" class="col">
+        <h3>Chart</h3>
+        <div id="chartContent" class="col">
+          <canvas id="canvas"></canvas>
+          <button type="button" class="btn btn-success">
+            <i class="fa fa-download"></i> Download</button>
+        </div>
+      </div>
+      <!-- Second Section -->
+      <div id="operations" class="col">
+        <h3>Operations</h3>
+        <div id="operationsContent" class="col">
+          <div id="primary_operation_buttons">
+            <div id="upload_button">
+              <label>
+                <input id="datasetFile" type="file">
+                <!--  ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" multiple -->
+                <span class="btn btn-primary">
+                  <i class="fa fa-upload"></i> Upload</span>
+              </label>
+            </div>
+            <a href="#" class="btn btn-success" id="export_operation">
+              <i class="fa fa-download"></i> Export</a>
+            <a href="#" class="btn btn-danger" id="delete_operation">
+              <i class="fa fa-minus-square"></i> Delete</a>
+          </div>
+
+          <h6 id="currentDataSet">Selected: TitanicDataset.csv</h6>
+
+          <h3>Modify Current Dataset</h3>
+
+          <div id="secondary_operation_buttons" class="btn-group">
+            <a href="#" class="btn" id="add_operation">
+              <i class="fa fa-plus"></i> Add</a>
+            <a href="#" class="btn" id="remove_operation">
+              <i class="fa fa-minus"></i> Remove</a>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 val: 85">
+          </div>
+
+          <h3>Chart Settings</h3>
+          <div class="form-group">
+            <input type="text" class="form-control text-center" id="chartTitleInput" placeholder="Enter Chart Title">
+          </div>
+          <div id="colDropDownMenu" class="btn-group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+              col
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-content" role="menu">
+              <li>
+                <a href="#">x</a>
+              </li>
+              <li>
+                <a href="#">y</a>
+              </li>
+              <li>
+                <a href="#">z</a>
+              </li>
+            </ul>
+          </div>
+          <div class="btn-group">
+            <button id="chartTypeBtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+              chart
+              <span class="caret"></span>
+            </button>
+            <div id="chartDropDownMenu" class="dropdown-menu dropdown-content" role="menu">
+              <option id="doughnut">
+                <a href="#">doughnut</a>
+              </option>
+              <option id="pie">
+                <a href="#">pie</a>
+              </option>
+              <option id='bar'>
+                <a href="#">bar</a>
+              </option>
+              <option id='line'>
+                <a href="#">line</a>
+              </option>
+            </div>
+          </div>
+
+          <h3>Quick Summary</h3>
+
+          <table class="table table-hover">
+            <tbody>
+              <tr>
+                <th>Min.</th>
+                <td>56</td>
+                <th>3rd Qu.</th>
+                <td>245</td>
+              </tr>
+              <tr>
+                <th>1st Qu.</th>
+                <td>78</td>
+                <th>Max.</th>
+                <td>300</td>
+              </tr>
+              <tr>
+                <th>Median</th>
+                <td>144.7</td>
+                <th>ColNum</th>
+                <td>5</td>
+              </tr>
+              <tr>
+                <th>Mean</th>
+                <td>210</td>
+                <th>RowNum</th>
+                <td>43</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
