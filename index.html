@@ -20,6 +20,10 @@
     crossorigin="anonymous"></script>
   <!-- Chart JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <!-- FileSaver JS -->
+  <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
+  <!-- Canvas to blob JS -->
+<script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
   <!-- My Own CSS -->
   <link rel="stylesheet" href="style.css">
   <!-- My Own JS -->
@@ -45,7 +49,7 @@
         <h3>Chart</h3>
         <div id="chartContent" class="col">
           <canvas id="canvas"></canvas>
-          <button type="button" class="btn btn-success">
+          <button id="downloadChart" type="button" class="btn btn-success">
             <i class="fa fa-download"></i> Download</button>
         </div>
       </div>
@@ -55,20 +59,17 @@
         <div id="operationsContent" class="col">
           <div id="primary_operation_buttons">
             <div id="upload_button">
-              <label>
-                <input id="datasetFile" type="file">
-                <!--  ngf-select ng-model="new_files" ng-change="fs.uploadFiles(new_files)" multiple -->
+              <label for="csvFileInput">
                 <span class="btn btn-primary">
                   <i class="fa fa-upload"></i> Upload</span>
               </label>
+              <input type="file" id="csvFileInput" accept=".csv">
             </div>
             <a href="#" class="btn btn-success" id="export_operation">
               <i class="fa fa-download"></i> Export</a>
-            <a href="#" class="btn btn-danger" id="delete_operation">
-              <i class="fa fa-minus-square"></i> Delete</a>
           </div>
 
-          <h6 id="currentDataSet">Selected: TitanicDataset.csv</h6>
+          <h6 id="fileName"></h6>
 
           <h3>Modify Current Dataset</h3>
 
@@ -87,20 +88,12 @@
             <input type="text" class="form-control text-center" id="chartTitleInput" placeholder="Enter Chart Title">
           </div>
           <div id="colDropDownMenu" class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button id="startHere" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
               col
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-content" role="menu">
-              <li>
-                <a href="#">x</a>
-              </li>
-              <li>
-                <a href="#">y</a>
-              </li>
-              <li>
-                <a href="#">z</a>
-              </li>
+              <div id="tableListItems"></div>
             </ul>
           </div>
           <div class="btn-group">
