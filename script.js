@@ -2,9 +2,13 @@
 /*global $*/
 $(function () {
   "use strict";
-  var colNumClicked = null;
+  var XDropDownIndexClicked = null;
+  var YDropDownIndexClicked = null;
   var file = null;
-  var newData = [];
+  var XData = [];
+  var YData = [];
+  var chartTitleText = "";
+  var chartType = "";
 
   // get file from input and store as variable
   ($('#csvFileInput')).on('change', function () {
@@ -64,7 +68,7 @@ $(function () {
     }
   }
 
-  // add column values to col dropdown menu
+  // add column values to x & y dropdown menus
   function addColItems(lines) {
     var list = "";
     // if columns are not empty (undefined)
@@ -75,23 +79,37 @@ $(function () {
     } else {
       console.log("dataset does not contains any columns");
     }
-    $('#tableListItems').html(list); // display columns in dropdown menu
+    $('#XListItems').html(list);
+    $('#YListItems').html(list); // display columns in dropdown menu
 
-    // if colNumClicked has been assigned, then change data in chart
-    if (colNumClicked !== null) {
-      var data = [];
-      for (var b = 0; b < lines.length - 2; b++) {
-        data.push(lines[b + 1][colNumClicked - 1]);
+    // if x or y drop down menu has been assigned/clicked, then change data in chart
+    if ((XDropDownIndexClicked !== null) && (XDropDownIndexClicked !== null)) {
+      var Xdata = [];
+      var Ydata = [];
+      for (var a = 0; b < lines.length - 2; b++) {
+        Xdata.push(lines[a + 1][XDropDownIndexClicked - 1]);
       }
-      changeChartData(data);
+      for (var b = 0; b < lines.length - 2; b++) {
+        Ydata.push(lines[b + 1][YDropDownIndexClicked - 1]);
+      }
+      changeXChartData(Xdata);
+      changeYChartData(Ydata);
     }
   }
 
-  // get index of list items from col dropdown menu
-  $('#tableListItems').on('click', 'a', function () {
+  // get index of list items from x dropdown menu
+  $('#XListItems').on('click', 'a', function () {
     // get clicked index
     var index = $('a').index(this) - 3;
-    colNumClicked = index;
+    XDropDownIndexClicked = index;
+    handleFiles(file);
+  });
+
+  // get index of list items from y dropdown menu
+  $('#YListItems').on('click', 'a', function () {
+    // get clicked index
+    var index = $('a').index(this) - 3;
+    YDropDownIndexClicked = index;
     handleFiles(file);
   });
 
@@ -102,14 +120,14 @@ $(function () {
       labels: ["1st class"],
       datasets: [{
         label: "Survivors",
-        data: /*newData*/ [4, 6, 5],
+        data: /*XData*/ [4, 6, 5],
         //backgroundColor: ["blue", "green", "red", ]
       }]
     },
     options: {
       title: {
         display: true,
-        text: "Number of Survivors in Pclass",
+        text: chartTitleText,
         fontSize: 20,
       },
       legend: {
@@ -198,13 +216,14 @@ $(function () {
       myChart.destroy();
     }
 
+    //chartTitleText = newTitle;
     var temp = jQuery.extend(true, {}, config);
     temp.options.title.text = newTitle;
     myChart = new Chart(ctx, temp);
   }
 
   // TODO: What if data is empty in some areas?
-  function changeChartData(data) {
+  function changeXChartData(data) {
     var ctx = document.getElementById("canvas").getContext("2d");
 
     // Remove the old chart and all its event handles
@@ -214,8 +233,24 @@ $(function () {
 
     var temp = jQuery.extend(true, {}, config);
 
-    newData = data;
-    temp.data.data = newData.map(Number);
+    XData = data;
+    temp.data.data = XData/*.map(Number)*/;
+    console.log(temp.data.data);
+    myChart = new Chart(ctx, temp);
+  }
+
+  function changeYChartData(data) {
+    var ctx = document.getElementById("canvas").getContext("2d");
+
+    // Remove the old chart and all its event handles
+    if (myChart) {
+      myChart.destroy();
+    }
+
+    var temp = jQuery.extend(true, {}, config);
+
+    YData = data;
+    temp.data.data = YData/*.map(Number)*/;
     console.log(temp.data.data);
     myChart = new Chart(ctx, temp);
   }

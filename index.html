@@ -23,7 +23,7 @@
   <!-- FileSaver JS -->
   <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
   <!-- Canvas to blob JS -->
-<script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
+  <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
   <!-- My Own CSS -->
   <link rel="stylesheet" href="style.css">
   <!-- My Own JS -->
@@ -87,15 +87,27 @@
           <div class="form-group">
             <input type="text" class="form-control text-center" id="chartTitleInput" placeholder="Enter Chart Title">
           </div>
-          <div id="colDropDownMenu" class="btn-group">
+
+          <div class="btn-group">
             <button id="startHere" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-              col
+              x
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu dropdown-content" role="menu">
-              <div id="tableListItems"></div>
+              <div id="XListItems"></div>
             </ul>
           </div>
+
+          <div class="btn-group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+              y
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-content" role="menu">
+              <div id="YListItems"></div>
+            </ul>
+          </div>
+
           <div class="btn-group">
             <button id="chartTypeBtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
               chart
