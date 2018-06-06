@@ -89,7 +89,7 @@
           </div>
 
           <div class="btn-group">
-            <button id="startHere" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
               x
               <span class="caret"></span>
             </button>
@@ -109,25 +109,29 @@
           </div>
 
           <div class="btn-group">
-            <button id="chartTypeBtn" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
               chart
               <span class="caret"></span>
             </button>
-            <div id="chartDropDownMenu" class="dropdown-menu dropdown-content" role="menu">
-              <option id="doughnut">
-                <a href="#">doughnut</a>
-              </option>
-              <option id="pie">
-                <a href="#">pie</a>
-              </option>
-              <option id='bar'>
-                <a href="#">bar</a>
-              </option>
-              <option id='line'>
-                <a href="#">line</a>
-              </option>
-            </div>
+            <ul class="dropdown-menu dropdown-content" role="menu">
+              <div id="chartTypeItems">
+                <li>
+                  <a href="#">doughnut</a>
+                </li>
+                <li>
+                  <a href="#">pie</a>
+                </li>
+                <li>
+                  <a href="#">bar</a>
+                </li>
+                <li>
+                  <a href="#">line</a>
+                </li>
+              </div>
+            </ul>
           </div>
+
+          <a href="#" class="btn btn-success" id="go">GO</a>
 
           <h3>Quick Summary</h3>
 

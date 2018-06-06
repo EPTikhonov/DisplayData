@@ -2,12 +2,15 @@
 /*global $*/
 $(function () {
   "use strict";
-  var XDropDownIndexClicked = null;
-  var YDropDownIndexClicked = null;
+
+  var xDropDownIndexClicked = null;
+  var yDropDownIndexClicked = null;
   var file = null;
-  var XData = [];
-  var YData = [];
-  var chartTitleText = "";
+  var xData = [];
+  var yData = [];
+  var xAxesLabel = "";
+  var yAxesLabel = "";
+  var chartTitle = "";
   var chartType = "";
 
   // get file from input and store as variable
@@ -59,7 +62,7 @@ $(function () {
     while (allTextLines.length) {
       lines.push(allTextLines.shift().split(','));
     }
-    addColItems(lines);
+    getData(lines);
   }
 
   function errorHandler(evt) {
@@ -68,8 +71,8 @@ $(function () {
     }
   }
 
-  // add column values to x & y dropdown menus
-  function addColItems(lines) {
+  // getting data from file and adding column values to x & y dropdown menus
+  function getData(lines) {
     var list = "";
     // if columns are not empty (undefined)
     if (lines[0].length !== undefined) {
@@ -79,56 +82,62 @@ $(function () {
     } else {
       console.log("dataset does not contains any columns");
     }
+    // display columns in each dropdown menu
     $('#XListItems').html(list);
-    $('#YListItems').html(list); // display columns in dropdown menu
+    $('#YListItems').html(list);
 
     // if x or y drop down menu has been assigned/clicked, then change data in chart
-    if ((XDropDownIndexClicked !== null) && (XDropDownIndexClicked !== null)) {
-      var Xdata = [];
-      var Ydata = [];
+    if ((xDropDownIndexClicked !== null) && (xDropDownIndexClicked !== null)) {
+      // new empty arrays each time dropdown is clicked
+      var xCurrentData = [];
+      var yCurrentData = [];
+
       for (var a = 0; b < lines.length - 2; b++) {
-        Xdata.push(lines[a + 1][XDropDownIndexClicked - 1]);
+        xCurrentData.push(lines[a + 1][xDropDownIndexClicked - 1]);
       }
       for (var b = 0; b < lines.length - 2; b++) {
-        Ydata.push(lines[b + 1][YDropDownIndexClicked - 1]);
+        yCurrentData.push(lines[b + 1][yDropDownIndexClicked - 1]);
       }
-      changeXChartData(Xdata);
-      changeYChartData(Ydata);
+      xData = xCurrentData;
+      console.log("xData: " + xCurrentData);
+      yData = yCurrentData;
+      console.log("yData: " + yCurrentData);
     }
   }
 
-  // get index of list items from x dropdown menu
-  $('#XListItems').on('click', 'a', function () {
-    // get clicked index
-    var index = $('a').index(this) - 3;
-    XDropDownIndexClicked = index;
-    handleFiles(file);
-  });
-
-  // get index of list items from y dropdown menu
-  $('#YListItems').on('click', 'a', function () {
-    // get clicked index
-    var index = $('a').index(this) - 3;
-    YDropDownIndexClicked = index;
-    handleFiles(file);
-  });
-
   // config object for chart
   var config = {
-    type: "bar",
+    type: chartType,
     data: {
-      labels: ["1st class"],
+      labels: [],
       datasets: [{
-        label: "Survivors",
-        data: /*XData*/ [4, 6, 5],
+        label: /*"Survivors"*/ "",
+        data: /*XData*/ [0, 3, 5],
         //backgroundColor: ["blue", "green", "red", ]
+
       }]
     },
     options: {
       title: {
         display: true,
-        text: chartTitleText,
+        text: chartTitle,
         fontSize: 20,
+      },
+      scales: {
+        xAxes: [{
+          //display: true,
+          scaleLabel: {
+            //display: true,
+            labelString: xAxesLabel
+          }
+        }],
+        yAxes: [{
+          display: false,
+          scaleLabel: {
+            display: false,
+            labelString: yAxesLabel
+          }
+        }]
       },
       legend: {
         display: true, // make a checkbox for true or false
@@ -158,72 +167,36 @@ $(function () {
     }
   });
 
-  // chart title input
-  var chartTitle = document.getElementById("chartTitleInput");
+  // get index of list items from x dropdown menu
+  $('#XListItems').on('click', 'a', function () {
+    // get clicked index
+    var index = $('a').index(this) - 3;
+    xDropDownIndexClicked = index;
+    alert(xDropDownIndexClicked);
+    xAxesLabel = $(this).text(); // get x axis label
+  });
 
-  chartTitle.addEventListener("keyup", function (e) {
-    if (e.keyCode === 13) {
-      var input = chartTitle.value;
-      changeChartTitle(input);
-    }
+  // get index of list items from y dropdown menu
+  $('#YListItems').on('click', 'a', function () {
+    // get clicked index
+    var index = $('a').index(this) - 3;
+    yDropDownIndexClicked = index;
+    alert(yDropDownIndexClicked);
+    yAxesLabel = $(this).text(); // get y axis label
   });
 
   // chart dropdown
-  $("#doughnut").click(function () {
-    changeChartType('doughnut');
-  });
-  $("#pie").click(function () {
-    changeChartType('pie');
-  });
-  $("#bar").click(function () {
-    changeChartType('bar');
-  });
-  $("#line").click(function () {
-    changeChartType('line');
+  $('#chartTypeItems').on('click', 'a', function () {
+    chartType = $(this).text();
   });
 
-  function changeChartType(newType) {
-    var ctx = document.getElementById("canvas").getContext("2d");
+  // displays final chart
+  $('#go').on('click', function () {
+    chartTitle = document.getElementById("chartTitleInput").value; // get current value of title input
+    updateChart(); //  updates from global variables
+  });
 
-    // Remove the old chart and all its event handles
-    if (myChart) {
-      myChart.destroy();
-    }
-
-    var temp = jQuery.extend(true, {}, config);
-    temp.type = newType;
-    myChart = new Chart(ctx, temp);
-  }
-
-  function changeLabel1(newLabel) {
-    var ctx = document.getElementById("canvas").getContext("2d");
-
-    // Remove the old chart and all its event handles
-    if (myChart) {
-      myChart.destroy();
-    }
-
-    var temp = jQuery.extend(true, {}, config);
-    temp.data[1].labels = newLabel;
-    myChart = new Chart(ctx, temp);
-  }
-
-  function changeChartTitle(newTitle) {
-    var ctx = document.getElementById("canvas").getContext("2d");
-
-    // Remove the old chart and all its event handles
-    if (myChart) {
-      myChart.destroy();
-    }
-
-    //chartTitleText = newTitle;
-    var temp = jQuery.extend(true, {}, config);
-    temp.options.title.text = newTitle;
-    myChart = new Chart(ctx, temp);
-  }
-
-  // TODO: What if data is empty in some areas?
-  function changeXChartData(data) {
+  function updateChart() {
     var ctx = document.getElementById("canvas").getContext("2d");
 
     // Remove the old chart and all its event handles
@@ -233,25 +206,12 @@ $(function () {
 
     var temp = jQuery.extend(true, {}, config);
 
-    XData = data;
-    temp.data.data = XData/*.map(Number)*/;
-    console.log(temp.data.data);
-    myChart = new Chart(ctx, temp);
-  }
+    temp.type = chartType;
+    temp.options.title.text = chartTitle; // TODO: into text?
+    temp.data.data = xData /*.map(Number)*/ ;
+    console.log(xData);
+    //temp.data.data = yData /*.map(Number)*/ ;
 
-  function changeYChartData(data) {
-    var ctx = document.getElementById("canvas").getContext("2d");
-
-    // Remove the old chart and all its event handles
-    if (myChart) {
-      myChart.destroy();
-    }
-
-    var temp = jQuery.extend(true, {}, config);
-
-    YData = data;
-    temp.data.data = YData/*.map(Number)*/;
-    console.log(temp.data.data);
     myChart = new Chart(ctx, temp);
   }
 
