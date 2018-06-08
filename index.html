@@ -65,8 +65,13 @@
               </label>
               <input type="file" id="csvFileInput" accept=".csv">
             </div>
-            <a href="#" class="btn btn-success" id="export_operation">
-              <i class="fa fa-download"></i> Export</a>
+            <div id="export_button">
+              <label for="REMOVE">
+                <span class="btn btn-success">
+                  <i class="fa fa-download"></i> Export</span>
+              </label>
+              <input type="download" id="REMOVE" accept="">
+            </div>
           </div>
 
           <h6 id="fileName"></h6>
@@ -80,7 +85,7 @@
               <i class="fa fa-minus"></i> Remove</a>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 val: 85">
+            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 new val: 85">
           </div>
 
           <h3>Chart Settings</h3>

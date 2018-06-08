@@ -62,6 +62,7 @@ $(function () {
     while (allTextLines.length) {
       lines.push(allTextLines.shift().split(','));
     }
+    //console.log("lines: "+lines);
     getData(lines);
   }
 
@@ -74,7 +75,7 @@ $(function () {
   // getting data from file and adding column values to x & y dropdown menus
   function getData(lines) {
     var list = "";
-    // if columns are not empty (undefined)
+    // if columns are not empty (undefined), add items in x & y dropdown
     if (lines[0].length !== undefined) {
       for (var i = 0; i < lines[0].length; i++) {
         list += "<li><a href = \"#\">" + lines[0][i] + "</a></li>";
@@ -92,16 +93,22 @@ $(function () {
       var xCurrentData = [];
       var yCurrentData = [];
 
-      for (var a = 0; b < lines.length - 2; b++) {
-        xCurrentData.push(lines[a + 1][xDropDownIndexClicked - 1]);
+      // lines[0][1], the 0 is the index (column) clicked (get this)
+      if (xDropDownIndexClicked != null) {
+        var xNumRows = (lines.length - lines[xDropDownIndexClicked].length);
+        for (var x = 0; x < xNumRows; x++) {
+          xCurrentData.push(lines[x + 1][xDropDownIndexClicked]);
+        }
       }
-      for (var b = 0; b < lines.length - 2; b++) {
-        yCurrentData.push(lines[b + 1][yDropDownIndexClicked - 1]);
+
+      if (yDropDownIndexClicked != null) {
+        var yNumRows = (lines.length - lines[yDropDownIndexClicked].length);
+        for (var y = 0; y < yNumRows; y++) {
+          yCurrentData.push(lines[y + 1][yDropDownIndexClicked]);
+        }
       }
-      xData = xCurrentData;
-      console.log("xData: " + xCurrentData);
-      yData = yCurrentData;
-      console.log("yData: " + yCurrentData);
+      xData = xCurrentData.map(Number);
+      yData = yCurrentData.map(Number);
     }
   }
 
@@ -109,10 +116,10 @@ $(function () {
   var config = {
     type: chartType,
     data: {
-      labels: [],
+      //labels: [],
       datasets: [{
-        label: /*"Survivors"*/ "",
-        data: /*XData*/ [0, 3, 5],
+        //label: "",
+        data: [],
         //backgroundColor: ["blue", "green", "red", ]
 
       }]
@@ -125,17 +132,17 @@ $(function () {
       },
       scales: {
         xAxes: [{
-          //display: true,
+          display: true,
           scaleLabel: {
-            //display: true,
-            labelString: xAxesLabel
+            display: true,
+            labelString: ""
           }
         }],
         yAxes: [{
-          display: false,
+          display: true,
           scaleLabel: {
-            display: false,
-            labelString: yAxesLabel
+            display: true,
+            labelString: ""
           }
         }]
       },
@@ -170,19 +177,19 @@ $(function () {
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 3;
+    var index = $('a').index(this) - 2;
     xDropDownIndexClicked = index;
-    alert(xDropDownIndexClicked);
     xAxesLabel = $(this).text(); // get x axis label
+    handleFiles(file);
   });
 
   // get index of list items from y dropdown menu
   $('#YListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 3;
+    var index = $('a').index(this) - 4;
     yDropDownIndexClicked = index;
-    alert(yDropDownIndexClicked);
     yAxesLabel = $(this).text(); // get y axis label
+    handleFiles(file);
   });
 
   // chart dropdown
@@ -208,9 +215,11 @@ $(function () {
 
     temp.type = chartType;
     temp.options.title.text = chartTitle; // TODO: into text?
-    temp.data.data = xData /*.map(Number)*/ ;
-    console.log(xData);
-    //temp.data.data = yData /*.map(Number)*/ ;
+    temp.data.datasets[0].data = xData;
+    temp.options.scales.xAxes[0].scaleLabel.labelString = xAxesLabel;
+    temp.options.scales.yAxes[0].scaleLabel.labelString = yAxesLabel;
+    //yAxesLabel
+    //temp.data.data = yData;
 
     myChart = new Chart(ctx, temp);
   }

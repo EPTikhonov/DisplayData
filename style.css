@@ -85,3 +85,11 @@ h3 {
 #upload_button input[type=file] {
   display: none;
 }
+
+#export_button {
+  display: inline-block;
+}
+
+#export_button input[type=download] {
+  display: none;
+}
