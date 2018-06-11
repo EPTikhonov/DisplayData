@@ -5,11 +5,9 @@ $(function () {
 
   var xDropDownIndexClicked = null;
   var yDropDownIndexClicked = null;
-  var quickSummaryIndexClicked = null;
   var file = null;
   var xData = [];
   var yData = [];
-  var quickSummaryData = [];
   var xAxesLabel = "";
   var yAxesLabel = "";
   var chartTitle = "";
@@ -88,62 +86,29 @@ $(function () {
     // display columns in each dropdown menu
     $('#XListItems').html(list);
     $('#YListItems').html(list);
-    $('#selectListItems').html(list);
 
-    if (xDropDownIndexClicked !== null) {
-      var xCurrentData = []; // new empty arrays each time dropdown is clicked
-      var xNumRows = (lines.length - lines[xDropDownIndexClicked].length);
-      for (var x = 0; x < xNumRows; x++) {
-        xCurrentData.push(lines[x + 1][xDropDownIndexClicked]);
-      }
-      xData = xCurrentData.map(Number);
-    }
-
-    if (yDropDownIndexClicked !== null) {
-      var yCurrentData = []; // new empty arrays each time dropdown is clicked
-      var yNumRows = (lines.length - lines[yDropDownIndexClicked].length);
-      for (var y = 0; y < yNumRows; y++) {
-        yCurrentData.push(lines[y + 1][yDropDownIndexClicked]);
-      }
-      yData = yCurrentData.map(Number);
-    }
-
-
-
-    if (quickSummaryIndexClicked !== null) {
-      var quickSummaryCurrentData = [];
-      var quickSummaryNumRows = (lines.length - lines[quickSummaryIndexClicked].length);
+    // if x or y drop down menu has been assigned/clicked, then change data in chart
+    if ((xDropDownIndexClicked !== null) && (xDropDownIndexClicked !== null)) {
+      // new empty arrays each time dropdown is clicked
+      var xCurrentData = [];
+      var yCurrentData = [];
 
       // lines[0][1], the 0 is the index (column) clicked (get this)
-      for (var z = 0; z < quickSummaryNumRows; z++) {
-        quickSummaryCurrentData.push(lines[z + 1][quickSummaryIndexClicked]);
-      }
-      
-      quickSummaryData = quickSummaryCurrentData.map(Number);
-
-      var total = 0;
-      var median = 0;
-
-      quickSummaryData.sort(function (a, b) { return a - b }); // sorting numbers from least to greatest without turning to string from sort method
-      quickSummaryData.forEach(function (data){
-        total += data;
-
-        if (quickSummaryData.length % 2 === 0) {
-          median = (quickSummaryData[quickSummaryData.length / 2 - 1] + quickSummaryData[quickSummaryData.length / 2]) / 2;
-        } else {
-          median = quickSummaryData[(quickSummaryData.length - 1) / 2];
+      if (xDropDownIndexClicked != null) {
+        var xNumRows = (lines.length - lines[xDropDownIndexClicked].length);
+        for (var x = 0; x < xNumRows; x++) {
+          xCurrentData.push(lines[x + 1][xDropDownIndexClicked]);
         }
-      });
+      }
 
-      $('#min').html(Math.min.apply(null, quickSummaryData));
-      $('#median').html(median.toFixed(2));
-      $('#max').html(Math.max.apply(null, quickSummaryData));
-      $('#mean').html((total / quickSummaryData.length).toFixed(2));
-      $('#range').html(quickSummaryData[0] + " - " + quickSummaryData[quickSummaryData.length - 1]);
-      console.log(quickSummaryData);
-      $('#numOfRows').html(quickSummaryNumRows);
-
-      quickSummaryIndexClicked = null;
+      if (yDropDownIndexClicked != null) {
+        var yNumRows = (lines.length - lines[yDropDownIndexClicked].length);
+        for (var y = 0; y < yNumRows; y++) {
+          yCurrentData.push(lines[y + 1][yDropDownIndexClicked]);
+        }
+      }
+      xData = xCurrentData.map(Number);
+      yData = yCurrentData.map(Number);
     }
   }
 
@@ -209,17 +174,6 @@ $(function () {
     }
   });
 
-  $('#upload_button').on('click', function () {
-    $('#selectBtnTitle').html("select");
-    // resetting quick summary calculations
-    $('#min').html("");
-    $('#median').html("");
-    $('#max').html("");
-    $('#mean').html("");
-    $('#range').html("");
-    $('#numOfRows').html("");
-  });
-
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
@@ -238,16 +192,6 @@ $(function () {
     handleFiles(file);
   });
 
-  $('#selectListItems').on('click', 'a', function () {
-    // get clicked index
-    var index = $('a').index(this) - 11;
-    quickSummaryIndexClicked = index;
-
-    $('#selectBtnTitle').html($(this).text()); // change button text to what item was clicked/selected from dropdown menu
-    handleFiles(file);
-    // when upload is clicked again then reset all values to  nothing
-  });
-
   // chart dropdown
   $('#chartTypeItems').on('click', 'a', function () {
     chartType = $(this).text();
@@ -257,7 +201,6 @@ $(function () {
   $('#go').on('click', function () {
     chartTitle = document.getElementById("chartTitleInput").value; // get current value of title input
     updateChart(); //  updates from global variables
-    $('#downloadChart').show(); // dispays download chart button when go button is clicked
   });
 
   function updateChart() {
