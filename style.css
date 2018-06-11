@@ -93,3 +93,7 @@ h3 {
 #export_button input[type=download] {
   display: none;
 }
+
+#downloadChart {
+  display: none;
+}
