@@ -64,7 +64,6 @@ $(function () {
     while (allTextLines.length) {
       lines.push(allTextLines.shift().split(','));
     }
-    //console.log("lines: "+lines);
     getData(lines);
   }
 
@@ -76,19 +75,19 @@ $(function () {
 
   // getting data from file and adding column values to x & y dropdown menus
   function getData(lines) {
-    var list = "";
+    var dropDownList = "";
     // if columns are not empty (undefined), add items in x & y dropdown
     if (lines[0].length !== undefined) {
       for (var i = 0; i < lines[0].length; i++) {
-        list += "<li><a href = \"#\">" + lines[0][i] + "</a></li>";
+        dropDownList += "<li><a href = \"#\">" + lines[0][i] + "</a></li>";
       }
     } else {
       console.log("dataset does not contains any columns");
     }
     // display columns in each dropdown menu
-    $('#XListItems').html(list);
-    $('#YListItems').html(list);
-    $('#selectListItems').html(list);
+    $('#XListItems').html(dropDownList);
+    $('#YListItems').html(dropDownList);
+    $('#selectListItems').html(dropDownList);
 
     if (xDropDownIndexClicked !== null) {
       var xCurrentData = []; // new empty arrays each time dropdown is clicked
@@ -121,27 +120,61 @@ $(function () {
 
       quickSummaryData = quickSummaryCurrentData.map(Number);
 
-      var total = 0;
-      var median = 0;
-
       quickSummaryData.sort(function (a, b) {
         return a - b
       }); // sorting numbers from least to greatest without turning to string from sort method
-      quickSummaryData.forEach(function (data) {
-        total += data;
 
+      var total = 0; // used for getting mean
+      var median = 0; // used for getting median
+
+      var mode = null,
+        modeMap = {},
+        maxElement = quickSummaryData[0],
+        maxCount = 1; // used for getting mode(s)
+
+      quickSummaryData.forEach(function (currentItem) {
+        total += currentItem; // for getting the mean
+
+        // if array length is divisable by 2, median = (num1 + num2) / 2
         if (quickSummaryData.length % 2 === 0) {
           median = (quickSummaryData[quickSummaryData.length / 2 - 1] + quickSummaryData[quickSummaryData.length / 2]) / 2;
-        } else {
+        } else { // median = num / 2
           median = quickSummaryData[(quickSummaryData.length - 1) / 2];
         }
+
+        // getting mode(s)
+        for (var i = 0; i < quickSummaryData.length; i++) {
+          var element = quickSummaryData[i];
+          if (modeMap[element] == null)
+            modeMap[element] = 1;
+          else
+            modeMap[element]++;
+
+          if (modeMap[element] > maxCount) {
+            maxElement = element;
+            maxCount = modeMap[element];
+          } else if (modeMap[element] == maxCount) {
+            maxElement += ', ' + element;
+            maxCount = modeMap[element];
+          }
+          mode = maxElement;
+        }
+
+        // from an object to an array of values, to a set
+        var modeMapSet = new Set(Object.values(modeMap));
+
+        // if modeMap elements are all equal, set mode to N/A
+        if (modeMapSet.size == 1) { // if modeMapSet size is 1, then all values are equivalent
+          mode = "N/A";
+        }
+
       });
 
       $('#min').html(Math.min.apply(null, quickSummaryData));
       $('#median').html(median.toFixed(2));
       $('#max').html(Math.max.apply(null, quickSummaryData));
       $('#mean').html((total / quickSummaryData.length).toFixed(2));
-      $('#range').html(quickSummaryData[0] + " - " + quickSummaryData[quickSummaryData.length - 1]);
+      $('#mode').html(mode);
       console.log(quickSummaryData);
       $('#numOfRows').html(quickSummaryNumRows);
 
@@ -225,7 +258,7 @@ $(function () {
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 2;
+    var index = $('a').index(this) - 3;
     xDropDownIndexClicked = index;
     xAxesLabel = $(this).text(); // get x axis label
     handleFiles(file);
@@ -234,7 +267,7 @@ $(function () {
   // get index of list items from y dropdown menu
   $('#YListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 4;
+    var index = $('a').index(this) - 5;
     yDropDownIndexClicked = index;
     yAxesLabel = $(this).text(); // get y axis label
     handleFiles(file);
@@ -242,12 +275,11 @@ $(function () {
 
   $('#selectListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 11;
+    var index = $('a').index(this) - 12;
     quickSummaryIndexClicked = index;
 
     $('#selectBtnTitle').html($(this).text()); // change button text to what item was clicked/selected from dropdown menu
     handleFiles(file);
-    // when upload is clicked again then reset all values to  nothing
   });
 
   // chart dropdown

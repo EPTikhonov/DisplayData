@@ -79,13 +79,15 @@
           <h3>Modify Current Dataset</h3>
 
           <div id="secondary_operation_buttons" class="btn-group">
+            <a href="#" class="btn" id="remove_operation">
+              <i class="fa fa-wrench"></i> Fix</a>
             <a href="#" class="btn" id="add_operation">
               <i class="fa fa-plus"></i> Add</a>
             <a href="#" class="btn" id="remove_operation">
               <i class="fa fa-minus"></i> Remove</a>
           </div>
           <div class="form-group">
-            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 new val: 85">
+            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 val: 85">
           </div>
 
           <h3>Chart Settings</h3>
@@ -162,8 +164,8 @@
               <tr>
                 <th>Median</th>
                 <td id="median"></td>
-                <th>Range</th>
-                <td id="range"></td>
+                <th>Mode(s)</th>
+                <td id="mode"></td>
               </tr>
               <tr>
                 <th>Max.</th>
