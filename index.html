@@ -18,12 +18,8 @@
   <!-- Bootstrap JS -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-  <!-- Chart JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-  <!-- FileSaver JS -->
-  <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/5ed507ef8aa53d8ecfea96d96bc7214cd2476fd2/FileSaver.min.js"></script>
-  <!-- Canvas to blob JS -->
-  <script src="https://cdn.rawgit.com/eligrey/canvas-toBlob.js/f1a01896135ab378aa5c0118eadd81da55e698d8/canvas-toBlob.js"></script>
+  <!-- Google Charts JS -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- My Own CSS -->
   <link rel="stylesheet" href="style.css">
   <!-- My Own JS -->
@@ -48,11 +44,14 @@
       <div id="chartDisplay" class="col">
         <h3>Chart</h3>
         <div id="chartContent" class="col">
-          <canvas id="canvas"></canvas>
-          <button id="downloadChart" type="button" class="btn btn-success">
-            <i class="fa fa-download"></i> Download</button>
+          <div id="canvas"></div>
+
+          <a id="downloadChart" href="" download="DisplayDataChart">
+            <i class="fa fa-download"></i> Download</a>
+
         </div>
       </div>
+      <div id="png"></div>
       <!-- Second Section -->
       <div id="operations" class="col">
         <h3>Operations</h3>
@@ -123,16 +122,13 @@
             <ul class="dropdown-menu dropdown-content" role="menu">
               <div id="chartTypeItems">
                 <li>
-                  <a href="#">doughnut</a>
+                  <a href="#">Line</a>
                 </li>
                 <li>
-                  <a href="#">pie</a>
+                  <a href="#">Bar</a>
                 </li>
                 <li>
-                  <a href="#">bar</a>
-                </li>
-                <li>
-                  <a href="#">line</a>
+                  <a href="#">Scatter</a>
                 </li>
               </div>
             </ul>

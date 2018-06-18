@@ -9,11 +9,13 @@ $(function () {
   var file = null;
   var xData = [];
   var yData = [];
+  var combinedChartData = [];
   var quickSummaryData = [];
   var xAxesLabel = "";
   var yAxesLabel = "";
   var chartTitle = "";
   var chartType = "";
+  var chart;
 
   // get file from input and store as variable
   ($('#csvFileInput')).on('change', function () {
@@ -27,17 +29,10 @@ $(function () {
     $('#fileName').html("Selected: " + fileName);
   });
 
-  // download current chart as png
-  $("#downloadChart").click(function () {
-    $("#canvas").get(0).toBlob(function (blob) {
-      saveAs(blob, "chart.png");
-    });
-  });
-
   function handleFiles(files) {
     // Check for the various File API support.
     if (window.FileReader) {
-      // FileReader are supported.
+      // FileReader is supported.
       getAsText(files[0]);
     } else {
       alert('FileReader is not supported in this browser.');
@@ -53,11 +48,13 @@ $(function () {
     reader.readAsText(fileToRead);
   }
 
+  // takes in the file
   function loadHandler(event) {
     var csv = event.target.result;
     processData(csv);
   }
 
+  // takes csv and splits the text into an array
   function processData(csv) {
     var allTextLines = csv.split(/\r\n|\n/);
     var lines = [];
@@ -67,13 +64,14 @@ $(function () {
     getData(lines);
   }
 
+  // error for if file is not csv
   function errorHandler(evt) {
     if (evt.target.error.name == "NotReadableError") {
       alert("Cannot read file!");
     }
   }
 
-  // getting data from file and adding column values to x & y dropdown menus
+  // getting data from file, setting values for x & y dropdown menues, and calculating quick summary info
   function getData(lines) {
     var dropDownList = "";
     // if columns are not empty (undefined), add items in x & y dropdown
@@ -89,31 +87,48 @@ $(function () {
     $('#YListItems').html(dropDownList);
     $('#selectListItems').html(dropDownList);
 
+    // if x dropdown has been clicked/assigned a value
     if (xDropDownIndexClicked !== null) {
       var xCurrentData = []; // new empty arrays each time dropdown is clicked
       var xNumRows = (lines.length - lines[xDropDownIndexClicked].length);
+      // add all values from each row into a xCurrentData array
       for (var x = 0; x < xNumRows; x++) {
         xCurrentData.push(lines[x + 1][xDropDownIndexClicked]);
       }
-      xData = xCurrentData.map(Number);
+      xData = xCurrentData.map(Number); // change from String to numbers
+      xData.sort(function (a, b) { // sort from least to greatest
+        return a - b;
+      });
     }
 
+    // if y dropdown has been clicked/assigned a value
     if (yDropDownIndexClicked !== null) {
       var yCurrentData = []; // new empty arrays each time dropdown is clicked
       var yNumRows = (lines.length - lines[yDropDownIndexClicked].length);
+      // add all values from each row into a yCurrentData array
       for (var y = 0; y < yNumRows; y++) {
         yCurrentData.push(lines[y + 1][yDropDownIndexClicked]);
       }
-      yData = yCurrentData.map(Number);
+      yData = yCurrentData.map(Number); // change from String to numbers
+      yData.sort(function (a, b) { // sort from least to greatest
+        return a - b;
+      });
     }
 
-
+    // if both x & y dropdown's have been clicked/assigned a value
+    if ((xDropDownIndexClicked !== null) && (yDropDownIndexClicked !== null)) {
+      var currentData = []; // new empty arrays each time dropdown is clicked
+      // put x and y into small arrays in one larger array as final data for the chart
+      for (var a = 0; a < xData.length; a++) {
+        currentData.push([xData[a], yData[a]]);
+      }
+      combinedChartData = currentData;
+    }
 
     if (quickSummaryIndexClicked !== null) {
       var quickSummaryCurrentData = [];
       var quickSummaryNumRows = (lines.length - lines[quickSummaryIndexClicked].length);
 
-      // lines[0][1], the 0 is the index (column) clicked (get this)
       for (var z = 0; z < quickSummaryNumRows; z++) {
         quickSummaryCurrentData.push(lines[z + 1][quickSummaryIndexClicked]);
       }
@@ -121,7 +136,7 @@ $(function () {
       quickSummaryData = quickSummaryCurrentData.map(Number);
 
       quickSummaryData.sort(function (a, b) {
-        return a - b
+        return a - b;
       }); // sorting numbers from least to greatest without turning to string from sort method
 
       var total = 0; // used for getting mean
@@ -167,7 +182,6 @@ $(function () {
         if (modeMapSet.size == 1) { // if modeMapSet size is 1, then all values are equivalent
           mode = "N/A";
         }
-
       });
 
       $('#min').html(Math.min.apply(null, quickSummaryData));
@@ -175,78 +189,14 @@ $(function () {
       $('#max').html(Math.max.apply(null, quickSummaryData));
       $('#mean').html((total / quickSummaryData.length).toFixed(2));
       $('#mode').html(mode);
-      console.log(quickSummaryData);
       $('#numOfRows').html(quickSummaryNumRows);
 
       quickSummaryIndexClicked = null;
     }
   }
-
-  // config object for chart
-  var config = {
-    type: chartType,
-    data: {
-      //labels: [],
-      datasets: [{
-        //label: "",
-        data: [],
-        //backgroundColor: ["blue", "green", "red", ]
-
-      }]
-    },
-    options: {
-      title: {
-        display: true,
-        text: chartTitle,
-        fontSize: 20,
-      },
-      scales: {
-        xAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: ""
-          }
-        }],
-        yAxes: [{
-          display: true,
-          scaleLabel: {
-            display: true,
-            labelString: ""
-          }
-        }]
-      },
-      legend: {
-        display: true, // make a checkbox for true or false
-        position: "bottom"
-      },
-      chartArea: {
-        backgroundColor: 'white'
-      }
-    }
-  };
-
-  var myChart;
-
-  // creating backgroundColor option for chart
-  Chart.pluginService.register({
-    beforeDraw: function (chart, easing) {
-      if (chart.config.options.chartArea && chart.config.options.chartArea.backgroundColor) {
-        var helpers = Chart.helpers;
-        var ctx = chart.chart.ctx;
-        var chartArea = chart.chartArea;
-
-        ctx.save();
-        ctx.fillStyle = chart.config.options.chartArea.backgroundColor;
-        ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-        ctx.restore();
-      }
-    }
-  });
-
+  // resetting quick summary info when upload button is clicked
   $('#upload_button').on('click', function () {
     $('#selectBtnTitle').html("select");
-    // resetting quick summary calculations
     $('#min').html("");
     $('#median').html("");
     $('#max').html("");
@@ -258,7 +208,7 @@ $(function () {
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 3;
+    var index = $('a').index(this) - 4;
     xDropDownIndexClicked = index;
     xAxesLabel = $(this).text(); // get x axis label
     handleFiles(file);
@@ -267,7 +217,7 @@ $(function () {
   // get index of list items from y dropdown menu
   $('#YListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 5;
+    var index = $('a').index(this) - 6;
     yDropDownIndexClicked = index;
     yAxesLabel = $(this).text(); // get y axis label
     handleFiles(file);
@@ -284,35 +234,53 @@ $(function () {
 
   // chart dropdown
   $('#chartTypeItems').on('click', 'a', function () {
-    chartType = $(this).text();
+    chartType = $(this).text() + "Chart";
   });
 
-  // displays final chart
+  // displays updated chart and shows download button
   $('#go').on('click', function () {
     chartTitle = document.getElementById("chartTitleInput").value; // get current value of title input
     updateChart(); //  updates from global variables
     $('#downloadChart').show(); // dispays download chart button when go button is clicked
   });
 
-  function updateChart() {
-    var ctx = document.getElementById("canvas").getContext("2d");
+  function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number');
+    data.addColumn('number');
 
-    // Remove the old chart and all its event handles
-    if (myChart) {
-      myChart.destroy();
-    }
+    data.addRows(
+      combinedChartData
+    );
 
-    var temp = jQuery.extend(true, {}, config);
+    var options = {
+      title: chartTitle,
+      legend: 'none',
+      crosshair: {
+        trigger: 'both'
+      },
+      hAxis: {
+        title: xAxesLabel
+      },
+      vAxis: {
+        title: yAxesLabel
+      }
+    };
 
-    temp.type = chartType;
-    temp.options.title.text = chartTitle; // TODO: into text?
-    temp.data.datasets[0].data = xData;
-    temp.options.scales.xAxes[0].scaleLabel.labelString = xAxesLabel;
-    temp.options.scales.yAxes[0].scaleLabel.labelString = yAxesLabel;
-    //yAxesLabel
-    //temp.data.data = yData;
+    chart = new google.visualization[chartType](document.getElementById('canvas'));
 
-    myChart = new Chart(ctx, temp);
+    // when the chart is ready, get the Image's url and set to href of the download link
+    google.visualization.events.addListener(chart, 'ready', function () {
+      $('#downloadChart').attr('href', chart.getImageURI());
+    });
+
+    chart.draw(data, options);
   }
 
+  function updateChart() {
+    google.charts.load('current', {
+      packages: ['corechart', 'line']
+    });
+    google.charts.setOnLoadCallback(drawChart);
+  }
 });
