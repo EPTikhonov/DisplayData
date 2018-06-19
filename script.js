@@ -208,7 +208,7 @@ $(function () {
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 4;
+    var index = $('a').index(this) - 1;
     xDropDownIndexClicked = index;
     xAxesLabel = $(this).text(); // get x axis label
     handleFiles(file);
@@ -217,7 +217,7 @@ $(function () {
   // get index of list items from y dropdown menu
   $('#YListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 6;
+    var index = $('a').index(this) - 3;
     yDropDownIndexClicked = index;
     yAxesLabel = $(this).text(); // get y axis label
     handleFiles(file);
@@ -225,7 +225,7 @@ $(function () {
 
   $('#selectListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 12;
+    var index = $('a').index(this) - 9;
     quickSummaryIndexClicked = index;
 
     $('#selectBtnTitle').html($(this).text()); // change button text to what item was clicked/selected from dropdown menu
