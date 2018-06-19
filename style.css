@@ -1,7 +1,9 @@
 body,
 html {
+
   height: 100%;
   margin: 0;
+  overflow-y: hidden;
   text-align: center;
 }
 
@@ -23,8 +25,8 @@ h3 {
   color: #333;
 }
 
-#chartDisplay {
-  text-align: center;
+#chartDisplay, #operations {
+  padding-bottom: 20%;
 }
 
 #chartContent {
@@ -32,10 +34,7 @@ h3 {
   border-style: solid;
   border-color: #333;
   height: 100%;
-}
-
-#operations {
-  text-align: center;
+  width: 100%;
 }
 
 #operationsContent {
@@ -43,20 +42,12 @@ h3 {
   border-style: solid;
   border-color: #333;
   height: 100%;
+  width: 100%;
 }
 
 #primary_operation_buttons {
   padding-top: 4%;
   padding-bottom: 1%;
-}
-
-#currentDataSet {
-  padding-top: 1%;
-  padding-bottom: 4%;
-}
-
-#chartContent {
-  padding-top: 30%;
 }
 
 .dropbtn {
@@ -82,18 +73,34 @@ h3 {
   display: inline-block;
 }
 
-#upload_button input[type=file] {
+#upload_button input[type=file], #downloadChart {
   display: none;
 }
 
-#export_button {
-  display: inline-block;
+#chartTitle {
+  padding-left: 30%;
+  padding-right: 30%;
 }
 
-#export_button input[type=download] {
-  display: none;
+#main {
+  padding-left: 8%;
+  padding-right: 8%;
+  height: 100%;
+  width: 100%;
 }
 
-#downloadChart {
-  display: none;
+@media screen and (max-width: 1200px) {
+  #chartTitle {
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+  #chartDisplay,
+  #operations {
+    padding-bottom: 40%;
+  }
+  
+}
+
+#chartPosition {
+  padding-top: 30%;
 }

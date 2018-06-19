@@ -24,7 +24,6 @@
   <link rel="stylesheet" href="style.css">
   <!-- My Own JS -->
   <script type="text/javascript" src="script.js"></script>
-
   <title>DisplayData</title>
 </head>
 
@@ -38,140 +37,109 @@
   </div>
   <br>
   <!-- Sections -->
-  <div class="container-fluid">
-    <div class="row">
-      <!-- First Section -->
-      <div id="chartDisplay" class="col">
-        <h3>Chart</h3>
-        <div id="chartContent" class="col">
+  <div id="main" class="row">
+    <!-- First Section -->
+    <div id="chartDisplay" class="col">
+      <h3>Chart</h3>
+      <div id="chartContent">
+        <div id="chartPosition">
           <div id="canvas"></div>
-
           <a id="downloadChart" href="" download="DisplayDataChart">
             <i class="fa fa-download"></i> Download</a>
-
         </div>
       </div>
-      <div id="png"></div>
-      <!-- Second Section -->
-      <div id="operations" class="col">
-        <h3>Operations</h3>
-        <div id="operationsContent" class="col">
-          <div id="primary_operation_buttons">
-            <div id="upload_button">
-              <label for="csvFileInput">
-                <span class="btn btn-primary">
-                  <i class="fa fa-upload"></i> Upload</span>
-              </label>
-              <input type="file" id="csvFileInput" accept=".csv">
-            </div>
-            <div id="export_button">
-              <label for="REMOVE">
-                <span class="btn btn-success">
-                  <i class="fa fa-download"></i> Export</span>
-              </label>
-              <input type="download" id="REMOVE" accept="">
-            </div>
+    </div>
+    <!-- Second Section -->
+    <div id="operations" class="col">
+      <h3>Operations</h3>
+      <div id="operationsContent">
+        <div id="primary_operation_buttons">
+          <div id="upload_button">
+            <label for="csvFileInput">
+              <span class="btn btn-primary">
+                <i class="fa fa-upload"></i> Upload</span>
+            </label>
+            <input type="file" id="csvFileInput" accept=".csv">
           </div>
-
-          <h6 id="fileName"></h6>
-
-          <h3>Modify Current Dataset</h3>
-
-          <div id="secondary_operation_buttons" class="btn-group">
-            <a href="#" class="btn" id="remove_operation">
-              <i class="fa fa-wrench"></i> Fix</a>
-            <a href="#" class="btn" id="add_operation">
-              <i class="fa fa-plus"></i> Add</a>
-            <a href="#" class="btn" id="remove_operation">
-              <i class="fa fa-minus"></i> Remove</a>
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control text-center" id="dataModify" placeholder="Example: col: 2 row: 37 val: 85">
-          </div>
-
-          <h3>Chart Settings</h3>
-          <div class="form-group">
-            <input type="text" class="form-control text-center" id="chartTitleInput" placeholder="Enter Chart Title">
-          </div>
-
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-              x
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-content" role="menu">
-              <div id="XListItems"></div>
-            </ul>
-          </div>
-
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-              y
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-content" role="menu">
-              <div id="YListItems"></div>
-            </ul>
-          </div>
-
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-              chart
-              <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-content" role="menu">
-              <div id="chartTypeItems">
-                <li>
-                  <a href="#">Line</a>
-                </li>
-                <li>
-                  <a href="#">Bar</a>
-                </li>
-                <li>
-                  <a href="#">Scatter</a>
-                </li>
-              </div>
-            </ul>
-          </div>
-
-          <a href="#" class="btn btn-success" id="go">GO</a>
-          <br>
-          <br>
-          <h3>Quick Summary</h3>
-
-          <div class="btn-group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-              <span id="selectBtnTitle" class="caret">select</span>
-            </button>
-            <ul class="dropdown-menu dropdown-content" role="menu">
-              <div id="selectListItems"></div>
-            </ul>
-          </div>
-          <br>
-          <br>
-          <table class="table table-hover">
-            <tbody>
-              <tr>
-                <th>Min.</th>
-                <td id="min"></td>
-                <th>Mean</th>
-                <td id="mean"></td>
-              </tr>
-              <tr>
-                <th>Median</th>
-                <td id="median"></td>
-                <th>Mode(s)</th>
-                <td id="mode"></td>
-              </tr>
-              <tr>
-                <th>Max.</th>
-                <td id="max"></td>
-                <th>NumOfRows</th>
-                <td id="numOfRows"></td>
-              </tr>
-            </tbody>
-          </table>
         </div>
+        <h6 id="fileName"></h6>
+        <h3>Chart Settings</h3>
+        <div id="chartTitle" class="form-group">
+          <input id="chartTitleInput" type="text" class="form-control text-center" placeholder="Enter Chart Title">
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            x
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-content" role="menu">
+            <div id="XListItems"></div>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            y
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-content" role="menu">
+            <div id="YListItems"></div>
+          </ul>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            chart
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-content" role="menu">
+            <div id="chartTypeItems">
+              <li>
+                <a href="#">Line</a>
+              </li>
+              <li>
+                <a href="#">Bar</a>
+              </li>
+              <li>
+                <a href="#">Scatter</a>
+              </li>
+            </div>
+          </ul>
+        </div>
+        <a href="#" class="btn btn-success" id="go">GO</a>
+        <br>
+        <br>
+        <h3>Quick Summary</h3>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span id="selectBtnTitle" class="caret">select</span>
+          </button>
+          <ul class="dropdown-menu dropdown-content" role="menu">
+            <div id="selectListItems"></div>
+          </ul>
+        </div>
+        <br>
+        <br>
+        <table class="table table-hover">
+          <tbody>
+            <tr>
+              <th>Min.</th>
+              <td id="min"></td>
+              <th>Mean</th>
+              <td id="mean"></td>
+            </tr>
+            <tr>
+              <th>Median</th>
+              <td id="median"></td>
+              <th>Mode(s)</th>
+              <td id="mode"></td>
+            </tr>
+            <tr>
+              <th>Max.</th>
+              <td id="max"></td>
+              <th>NumOfRows</th>
+              <td id="numOfRows"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
