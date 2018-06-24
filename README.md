@@ -8,7 +8,7 @@ Import a CSV file and display data through charts using Google Charts API. Chart
 
 Check it out at: https://eptikhonov.github.io/DisplayData/
 
-<a href="#"><img src="https://github.com/EPTikhonov/DisplayData/blob/master/DisplayData.gif" title="DisplayData"/></a>
+<a href="#"><img src="https://github.com/EPTikhonov/DisplayData/blob/gh-pages/DisplayData.gif" title="DisplayData"/></a>
 
 ## Built With
 * HTML
