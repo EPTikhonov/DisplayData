@@ -13,8 +13,9 @@ Check it out at: https://eptikhonov.github.io/DisplayData/
 ## Built With
 * HTML
 * CSS
-* Bootstrap
 * JavaScript
+* jQuery
+* Bootstrap
 
 ## License & Copyright
 
