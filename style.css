@@ -1,9 +1,10 @@
-body,
 html {
-
-  height: 100%;
   margin: 0;
-  overflow-y: hidden;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+body {
   text-align: center;
 }
 
@@ -15,34 +16,22 @@ a:active {
   text-decoration: none;
 }
 
+h3 {
+  color: #333;
+}
+
 .header {
   background-color: #333;
   color: white;
   font-size: 40px;
 }
 
-h3 {
-  color: #333;
-}
-
-#chartDisplay, #operations {
-  padding-bottom: 20%;
-}
-
-#chartContent {
-  text-align: center;
-  border-style: solid;
-  border-color: #333;
-  height: 100%;
-  width: 100%;
-}
-
+#chartContent,
 #operationsContent {
+  height: 100%;
   text-align: center;
   border-style: solid;
   border-color: #333;
-  height: 100%;
-  width: 100%;
 }
 
 #primary_operation_buttons {
@@ -73,34 +62,27 @@ h3 {
   display: inline-block;
 }
 
-#upload_button input[type=file], #downloadChart {
+#upload_button input[type=file],
+#downloadChart {
   display: none;
-}
-
-#chartTitle {
-  padding-left: 30%;
-  padding-right: 30%;
 }
 
 #main {
   padding-left: 8%;
   padding-right: 8%;
-  height: 100%;
-  width: 100%;
 }
 
-@media screen and (max-width: 1200px) {
-  #chartTitle {
-    padding-left: 2%;
-    padding-right: 2%;
-  }
-  #chartDisplay,
-  #operations {
-    padding-bottom: 40%;
-  }
-  
+#main.row {
+  height: auto;
 }
 
 #chartPosition {
-  padding-top: 30%;
+  margin: 30% auto;
+}
+
+@media only screen and (max-width: 575px) {
+  #chartDisplay,
+  #operations {
+    margin: auto;
+  }
 }
