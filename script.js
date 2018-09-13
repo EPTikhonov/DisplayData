@@ -80,7 +80,7 @@ $(function () {
         dropDownList += "<li><a href = \"#\">" + lines[0][i] + "</a></li>";
       }
     } else {
-      console.log("dataset does not contains any columns");
+      console.log("dataset does not contain any columns");
     }
     // display columns in each dropdown menu
     $('#XListItems').html(dropDownList);
@@ -128,7 +128,7 @@ $(function () {
     if (quickSummaryIndexClicked !== null) {
       var quickSummaryCurrentData = [];
       var quickSummaryNumRows = (lines.length - lines[quickSummaryIndexClicked].length);
-
+      
       for (var z = 0; z < quickSummaryNumRows; z++) {
         quickSummaryCurrentData.push(lines[z + 1][quickSummaryIndexClicked]);
       }
@@ -208,7 +208,7 @@ $(function () {
   // get index of list items from x dropdown menu
   $('#XListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 1;
+    var index = $('#XListItems a').index(this);
     xDropDownIndexClicked = index;
     xAxesLabel = $(this).text(); // get x axis label
     handleFiles(file);
@@ -217,7 +217,7 @@ $(function () {
   // get index of list items from y dropdown menu
   $('#YListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 3;
+    var index = $('#YListItems a').index(this);
     yDropDownIndexClicked = index;
     yAxesLabel = $(this).text(); // get y axis label
     handleFiles(file);
@@ -225,7 +225,7 @@ $(function () {
 
   $('#selectListItems').on('click', 'a', function () {
     // get clicked index
-    var index = $('a').index(this) - 9;
+    var index = $('#selectListItems a').index(this);
     quickSummaryIndexClicked = index;
 
     $('#selectBtnTitle').html($(this).text()); // change button text to what item was clicked/selected from dropdown menu
